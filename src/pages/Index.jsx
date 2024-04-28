@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl, FormLabel, Input, Textarea, VStack, Text, useToast, IconButton } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel, Input, Textarea, VStack, Text, useToast, IconButton, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaPlus, FaEdit, FaTrash, FaSave } from "react-icons/fa";
 
@@ -81,6 +81,7 @@ const Index = () => {
 
   return (
     <Flex direction="column" p={5}>
+      <Heading as="h1" size="xl" textAlign="center" mb={6}>Event Management Dashboard</Heading>
       <VStack spacing={4}>
         <FormControl>
           <FormLabel>Event Name</FormLabel>
