@@ -80,7 +80,7 @@ const Index = () => {
   };
 
   return (
-    <Flex direction="column" p={5}>
+    <Flex direction="column" p={5} minHeight="100vh">
       <Heading as="h1" size="xl" textAlign="center" mb={6}>Event Management Dashboard</Heading>
       <VStack spacing={4}>
         <FormControl>
@@ -113,6 +113,8 @@ const Index = () => {
             <IconButton aria-label="Delete Event" icon={<FaTrash />} colorScheme="red" onClick={() => handleDeleteEvent(event.id)} />
           </Flex>
         ))}
+      <Box as="footer" p={4} bg="gray.200" textAlign="center" mt={10}>
+        <Text fontSize="sm">© 2023 Event Management App. All rights reserved.</Text>
       </Box>
     </Flex>
   );
