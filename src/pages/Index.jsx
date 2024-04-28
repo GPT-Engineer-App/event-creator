@@ -1,12 +1,13 @@
-import { Box, Button, Flex, FormControl, FormLabel, Input, Textarea, VStack, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel, Input, Textarea, VStack, Text, useToast, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
-import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaSave } from "react-icons/fa";
 
 const Index = () => {
   const [events, setEvents] = useState([]);
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [eventDescription, setEventDescription] = useState("");
+  const [editId, setEditId] = useState(null);
   const toast = useToast();
 
   const handleAddEvent = () => {
@@ -39,6 +40,34 @@ const Index = () => {
     });
   };
 
+  const handleEditEvent = (event) => {
+    setEditId(event.id);
+    setEventName(event.name);
+    setEventDate(event.date);
+    setEventDescription(event.description);
+  };
+
+  const handleSaveEdit = () => {
+    const updatedEvents = events.map(event => {
+      if (event.id === editId) {
+        return { ...event, name: eventName, date: eventDate, description: eventDescription };
+      }
+      return event;
+    });
+    setEvents(updatedEvents);
+    setEditId(null);
+    setEventName("");
+    setEventDate("");
+    setEventDescription("");
+    toast({
+      title: "Updated",
+      description: "Event updated successfully",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
+  };
+
   const handleDeleteEvent = (id) => {
     setEvents(events.filter(event => event.id !== id));
     toast({
@@ -65,7 +94,11 @@ const Index = () => {
           <FormLabel>Event Description</FormLabel>
           <Textarea value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} placeholder="Enter event description" />
         </FormControl>
-        <Button leftIcon={<FaPlus />} colorScheme="blue" onClick={handleAddEvent}>Add Event</Button>
+        {editId ? (
+          <Button leftIcon={<FaSave />} colorScheme="green" onClick={handleSaveEdit}>Save Changes</Button>
+        ) : (
+          <Button leftIcon={<FaPlus />} colorScheme="blue" onClick={handleAddEvent}>Add Event</Button>
+        )}
       </VStack>
       <Box mt={10}>
         {events.map((event) => (
@@ -75,7 +108,8 @@ const Index = () => {
               <Text fontSize="sm">{event.date}</Text>
               <Text fontSize="sm">{event.description}</Text>
             </VStack>
-            <Button leftIcon={<FaTrash />} colorScheme="red" onClick={() => handleDeleteEvent(event.id)}>Delete</Button>
+            <IconButton aria-label="Edit Event" icon={<FaEdit />} onClick={() => handleEditEvent(event)} />
+            <IconButton aria-label="Delete Event" icon={<FaTrash />} colorScheme="red" onClick={() => handleDeleteEvent(event.id)} />
           </Flex>
         ))}
       </Box>
